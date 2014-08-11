@@ -12,14 +12,14 @@ function getWeatherData(){
 				{	name: 'Portland',
 				  	forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
 					iconUrl: 'http://icons-ak-wxug.com/i/c/k/cloudy.gif',
-					weather: 'Overcast';
+					weather: 'Overcast',
 					temp: '12.3 C',
 				},
 				{
 					name: 'Bend'
 					forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
                                         iconUrl: 'http://icons-ak-wxug.com/i/c/k/partlycloudy.gif',
-                                        weather: 'Partly Cloudy';
+                                        weather: 'Partly Cloudy',
                                         temp: '11.5 C',
                                 }
 			],
