@@ -16,7 +16,7 @@ function getWeatherData(){
 					temp: '12.3 C',
 				},
 				{
-					name: 'Bend'
+					name: 'Bend',
 					forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
                                         iconUrl: 'http://icons-ak-wxug.com/i/c/k/partlycloudy.gif',
                                         weather: 'Partly Cloudy',
