@@ -5,6 +5,33 @@ var handlebars = require('express3-handlebars').create({ defaultLayout:'main'});
 app.engine('handlebars',handlebars.engine);
 app.set('view engine','handlebars');
 app.set('port', process.env.PORT || 3000);
+
+function getWeatherData(){
+	return {
+		locations: [
+				{	name: 'Portland',
+				  	forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
+					iconUrl: 'http://icons-ak-wxug.com/i/c/k/cloudy.gif',
+					weather: 'Overcast';
+					temp: '12.3 C',
+				},
+				{
+					name: 'Bend'
+					forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
+                                        iconUrl: 'http://icons-ak-wxug.com/i/c/k/partlycloudy.gif',
+                                        weather: 'Partly Cloudy';
+                                        temp: '11.5 C',
+                                }
+			],
+		};
+}
+
+app.use(function(req,res,next){
+	if(!res.locals.partials) res.locals.partials ={};
+	res.locals.partials.weather = getWeatherData();
+	next();
+});
+
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req,res){
 	res.render('home');
@@ -12,6 +39,14 @@ app.get('/', function(req,res){
 app.get('/about', function(req,res){
 	var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
 	res.render('about', { fortune: fortune.getFortune });
+});
+
+app.get('/headers', function(req,res){
+	res.set('Content-type','text/plain');
+	var s = '';
+	for(var name in req.headers) s += name + ': '
+		+ req.headers[name]+ '\n';
+	res.send(s);
 });
 
 app.use(function(req,res){
