@@ -1,5 +1,6 @@
 var express = require('express');
 var fortune = require('./lib/fortune.js');
+var formidable = require('formidable');
 var app = express();
 var handlebars = require('express3-handlebars').create({ 
 							defaultLayout:'main',
@@ -51,10 +52,11 @@ app.get('/newsletter', function(req,res){
 app.post('/process', function(req,res){
 	if (req.xhr || req.accepts('json,html')==='json'){
 		res.send({ success:true });
-		console.log('Form (from querystring): ' + req.query.form);
-		console.log('CSRF Token (from hidden form field): ' + req.body._csrf);
-		console.log('Name (from visible form field): ' + req.body.name);
-		console.log('Email (from visible form field): ' + req.body.email);
+		console.log(req.body);
+		console.log('Form (from querystring): ' + req.xhr.form);
+		console.log('CSRF Token (from hidden form field): ' + req.xhr._csrf);
+		console.log('Name (from visible form field): ' + req.xhr.name);
+		console.log('Email (from visible form field): ' + req.xhr.email);
 	} else {
 		res.redirect(303, '/404');
 	}
@@ -66,6 +68,27 @@ app.get('/', function(req,res){
 app.get('/thank-you', function(req,res){
 	res.render('thankyou');
 });
+
+app.get('/contest/vacation-photo', function(req,res){
+	var now = new Date();
+	res.render('contest/vacation-photo', { 	year: now.getFullYear(),
+						month: now.getMonth()
+					}
+		);
+});
+
+app.post('/contest/vacation-photo/:year/:month', function(req, res){
+	var form = new formidable.IncomingForm();
+	form.parse(req, function(err, fields, files) {
+		if (err) return res.redirect(303,'/error');
+		console.log('received fields:');
+		console.log(fields);
+		console.log('received files:');
+		console.log(files);
+		res.redirect(303, '/thank-you');
+	});
+});
+
 
 app.get('/about', function(req,res){
 	var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
