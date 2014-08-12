@@ -1,7 +1,17 @@
 var express = require('express');
 var fortune = require('./lib/fortune.js');
 var app = express();
-var handlebars = require('express3-handlebars').create({ defaultLayout:'main'});
+var handlebars = require('express3-handlebars').create({ 
+							defaultLayout:'main',
+							helpers: {
+								section: function(name, options){
+									if(!this._sections)
+										this._sections={};
+										this._sections[name] = options.fn(this);
+										return null;
+								}
+							}										
+});
 app.engine('handlebars',handlebars.engine);
 app.set('view engine','handlebars');
 app.set('port', process.env.PORT || 3000);
@@ -11,14 +21,14 @@ function getWeatherData(){
 		locations: [
 				{	name: 'Portland',
 				  	forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
-					iconUrl: 'http://icons-ak-wxug.com/i/c/k/cloudy.gif',
+					iconUrl: 'http://icons.wxug.com/i/c/a/cloudy.gif',
 					weather: 'Overcast',
 					temp: '12.3 C',
 				},
 				{
 					name: 'Bend',
 					forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
-                                        iconUrl: 'http://icons-ak-wxug.com/i/c/k/partlycloudy.gif',
+                                        iconUrl: 'http://icons.wxug.com/i/c/a/partlycloudy.gif',
                                         weather: 'Partly Cloudy',
                                         temp: '11.5 C',
                                 }
