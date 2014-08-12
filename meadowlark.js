@@ -39,7 +39,7 @@ app.get('/newsletter', function(req,res){
 });
 
 app.post('/process', function(req,res){
-	if req.xhr || req.accepts('json,html')==='json'){
+	if (req.xhr || req.accepts('json,html')==='json'){
 		res.send({ success:true });
 		console.log('Form (from querystring): ' + req.query.form);
 		console.log('CSRF Token (from hidden form field): ' + req.body._csrf);
